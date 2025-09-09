@@ -18,6 +18,9 @@ use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) exit;
 
+// Include dependencies.
+require_once __DIR__ . '/vendor/autoload.php';
+
 add_filter( 'the_content', __NAMESPACE__ . '\handle_links', 20 );
 /**
  * Handles the content links.
