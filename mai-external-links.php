@@ -4,7 +4,7 @@
  * Plugin Name:     Mai External Links
  * Plugin URI:      https://bizbudding.com/
  * Description:     Finds external links in the content and adds `target="_blank"` and `rel="noopener noreferrer"` so they safely open in a new tab.
- * Version:         0.1.0
+ * Version:         1.0.0
  *
  * Author:          BizBudding
  * Author URI:      https://bizbudding.com
