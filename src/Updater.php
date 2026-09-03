@@ -11,6 +11,8 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Self-updates from the GitHub repo.
  *
+ * @since 1.1.0
+ *
  * @uses https://github.com/YahnisElsts/plugin-update-checker/
  */
 final class Updater {
@@ -19,6 +21,17 @@ final class Updater {
 
 	private const SLUG = 'mai-external-links';
 
+	/**
+	 * Wires the update checker to the GitHub repo.
+	 *
+	 * Returns early rather than failing when the library is absent, so a tree
+	 * deployed without its vendor directory still loads and simply does not
+	 * self-update.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @return void
+	 */
 	public function register(): void {
 		if ( ! class_exists( PucFactory::class ) ) {
 			return;

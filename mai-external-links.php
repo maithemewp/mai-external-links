@@ -29,6 +29,16 @@ require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/src/Links.php';
 require_once __DIR__ . '/src/Updater.php';
 
+/**
+ * Boots the plugin once WordPress has loaded every other plugin.
+ *
+ * plugins_loaded, not an immediate call: Links reads home_url() and Updater
+ * looks for a theme helper, and neither is reliable at file-include time.
+ *
+ * @since 1.1.0
+ *
+ * @return void
+ */
 add_action(
 	'plugins_loaded',
 	static function (): void {

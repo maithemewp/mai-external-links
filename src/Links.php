@@ -14,12 +14,21 @@ defined( 'ABSPATH' ) || exit;
  * Runs on post content and on comments. Comments are the reason the cost of
  * the check matters: a post has a handful of links and a long thread has
  * thousands, so anything per-link that touches the network is unusable here.
+ *
+ * @since 1.1.0
  */
 final class Links {
 
 	/** Attributes every outbound link gets. */
 	private const REL = 'noopener noreferrer';
 
+	/**
+	 * Hooks the two filters this plugin runs on.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @return void
+	 */
 	public function register(): void {
 		add_filter( 'the_content', [ $this, 'filterContent' ], 20 );
 
@@ -41,6 +50,13 @@ final class Links {
 	 * The main-query guard is deliberate and belongs to this filter only: it keeps
 	 * the work off excerpts, widgets and secondary loops, where the output is not
 	 * the page the reader is on.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param mixed $content Post content. Typed `mixed` and cast rather than
+	 *                       `string`, because a filter receives whatever the
+	 *                       previous callback returned.
+	 * @return string
 	 */
 	public function filterContent( mixed $content ): string {
 		$content = (string) $content;
@@ -62,6 +78,11 @@ final class Links {
 	 * still runs comment_text, and every one of them would be skipped by a
 	 * main-query test, which is the sort of gap that shows up as "it works on the
 	 * first hundred comments and not the rest".
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param mixed $content Comment HTML. See filterContent() for why `mixed`.
+	 * @return string
 	 */
 	public function filterComment( mixed $content ): string {
 		$content = (string) $content;
@@ -75,6 +96,11 @@ final class Links {
 
 	/**
 	 * Add target and rel to every link pointing off this site.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param string $html Markup to scan.
+	 * @return string The markup, unchanged if nothing matched.
 	 */
 	private function mark( string $html ): string {
 		// No host means no way to tell inside from outside, so change nothing
@@ -135,6 +161,12 @@ final class Links {
 	 * outbound link. That is the better answer anyway. rel="noopener noreferrer" is
 	 * a security attribute, and whether it is applied should not depend on whether
 	 * someone else's domain is still registered.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param string $href The link's href, exactly as authored.
+	 * @param string $host The site's own host, from siteHost().
+	 * @return bool
 	 */
 	private function isExternal( string $href, string $host ): bool {
 		$parts = wp_parse_url( $href );
@@ -163,6 +195,11 @@ final class Links {
 	/**
 	 * The site's own host, lowercased, with any leading www. removed so that
 	 * yoursite.com and www.yoursite.com are one site rather than two.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @return string|null Null when home_url() yields no host, which mark()
+	 *                     treats as "cannot tell inside from outside".
 	 */
 	private function siteHost(): ?string {
 		$host = strtolower( (string) wp_parse_url( home_url(), PHP_URL_HOST ) );
